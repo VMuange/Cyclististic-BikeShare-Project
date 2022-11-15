@@ -1,4 +1,4 @@
---Duplicate the first table and name it. I named mine "Main". 
+--Create a table that contains the columns you want to have. I named mine "Main". 
 --This is where you'll combine all your data into one table for exploration and cleaning.
 
 USE [Cyclistic Bikeshare]
@@ -29,6 +29,10 @@ CREATE TABLE [dbo].[Main](
 GO;
 
 --Combine all tables into one table using INSERT INTO.
+
+INSERT INTO [Cyclistic Bikeshare].[dbo].[Main]
+SELECT *
+FROM April2020
 
 INSERT INTO [Cyclistic Bikeshare].[dbo].[Main]
 SELECT *
@@ -111,5 +115,20 @@ FROM Main
 WHERE start_station_id IS NOT NULL 
 OR end_station_id IS NOT NULL
 
-SELECT*
-FROM Bikeshare_CleanData WHERE ride_duration_minutes <= 0;
+-- Delete rows where ride duration is 0 or less.
+DELETE 
+FROM  Bikeshare_CleanData
+WHERE ride_duration_minutes <= 0
+
+-- THE ANALYSIS
+-- 1. Get the average ride duration grouped by member, casual and month
+
+SELECT
+    DISTINCT month, member_casual,
+    AVG(ride_duration_minutes) AS avg_ride_duration
+FROM
+   Bikeshare_CleanData
+GROUP BY
+member_casual, month
+
+-- 2. 
