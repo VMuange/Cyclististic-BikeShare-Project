@@ -90,8 +90,8 @@ CAST(started_at AS DATE) AS start_date,
 CAST(ended_at AS DATE) AS end_date,
 
 
---Extract Month name from date
-DATENAME(month, started_at) AS month,
+--Extract MonthYear name from date
+DATENAME(m,started_at)+cast(datepart(yyyy,started_at) as varchar) as MonthYear,
 
 --Extract day name from date
 DATENAME(WEEKDAY, started_at) AS day,
@@ -122,17 +122,17 @@ WHERE ride_duration_minutes <= 0
 
 -- THE ANALYSIS 
 -- Create views that you will save to Excel and later visualize with Tableau
--- 1. Get the average ride duration grouped by member, casual and month
+-- 1. Get the average ride duration grouped by member_casual and monthyear
 -- This will help determine ride duration by months
 
-CREATE VIEW [avg_ride_duration_month] AS
+CREATE VIEW [average_ride_duration_monthyear2] AS
 SELECT
-    month, member_casual,
+    MonthYear, member_casual,
     AVG(ride_duration_minutes) AS avg_ride_duration
 FROM
    Bikeshare_CleanData
 GROUP BY
-member_casual, month;
+member_casual, MonthYear;
 
 -- 2. Get the total rides per day grouped by member_casual
 
