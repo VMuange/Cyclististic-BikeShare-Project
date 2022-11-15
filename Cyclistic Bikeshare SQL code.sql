@@ -32,7 +32,7 @@ GO;
 
 INSERT INTO [Cyclistic Bikeshare].[dbo].[Main]
 SELECT *
-FROM April2020
+FROM April2020;
 
 INSERT INTO [Cyclistic Bikeshare].[dbo].[Main]
 SELECT *
@@ -120,15 +120,58 @@ DELETE
 FROM  Bikeshare_CleanData
 WHERE ride_duration_minutes <= 0
 
--- THE ANALYSIS
+-- THE ANALYSIS 
+-- Create views that you will save to Excel and later visualize with Tableau
 -- 1. Get the average ride duration grouped by member, casual and month
+-- This will help determine ride duration by months
 
+CREATE VIEW [avg_ride_duration_month] AS
 SELECT
-    DISTINCT month, member_casual,
+    month, member_casual,
     AVG(ride_duration_minutes) AS avg_ride_duration
 FROM
    Bikeshare_CleanData
 GROUP BY
-member_casual, month
+member_casual, month;
 
--- 2. 
+-- 2. Get the total rides per day grouped by member_casual
+
+CREATE VIEW [TotalRides_by_day] AS
+SELECT
+    day, member_casual,
+    COUNT(ride_id) AS Total_rides
+FROM
+   Bikeshare_CleanData
+GROUP BY
+member_casual, day;
+
+-- 3. Get bike preference throughout the year.
+
+CREATE VIEW [Bike_Preference_by_months] AS
+SELECT
+    month, rideable_type,
+	COUNT(ride_id) AS Total_Rides
+FROM
+   Bikeshare_CleanData
+GROUP BY
+month, rideable_type
+
+-- 4. Get average ride distance between casual riders and members
+
+CREATE VIEW [Avg_distance] AS
+SELECT  member_casual, 
+AVG(ride_dis_metres) AS Avg_distance
+FROM Bikeshare_CleanData
+GROUP BY member_casual
+
+
+-- 5. Get the total rides per month grouped by member_casual
+
+CREATE VIEW [TotalRides_by_month] AS
+SELECT
+    month, member_casual,
+    COUNT(ride_id) AS Total_rides
+FROM
+   Bikeshare_CleanData
+GROUP BY
+member_casual, month
