@@ -100,6 +100,8 @@ DATENAME(WEEKDAY, started_at) AS day,
 CONVERT(VARCHAR(10), CAST(started_at AS TIME), 0) AS start_time,
 CONVERT(VARCHAR(10), CAST(ended_at AS TIME), 0) AS end_time,
 
+-- Extract starting hour from timestamp
+DATENAME(hh, start_time) AS start_hour,
 
 --Calculate ride duration by subtracting start time from end time
 DATEDIFF(minute, started_at, ended_at) AS ride_duration_minutes,
