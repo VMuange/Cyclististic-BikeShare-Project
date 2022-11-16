@@ -177,3 +177,14 @@ FROM
    Bikeshare_CleanData
 GROUP BY
 member_casual, month
+
+-- 6. Get total rides by start hour
+CREATE VIEW [Total_Rides_by_start_hour] AS
+SELECT 
+	COUNT(ride_id) AS Total_rides,
+	start_hour, member_casual
+FROM 
+	Bikeshare_CleanData
+GROUP BY start_hour, member_casual
+
+- 
